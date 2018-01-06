@@ -163,11 +163,4 @@ public abstract class JdbcMenuListRepositoryImpl<T> implements MenuListRepositor
         return  false;
     }
 
-    // TODO: 29.12.2017 remove
-    /*save hasOrders to database depending of existence orders of this menuList*/
-    @Override
-    @Transactional
-    public void saveValuesToDB(int id) {
-        jdbcTemplate.update("UPDATE MENU_LISTS SET hasOrders=((SELECT (menu_lists.id) FROM menu_lists INNER JOIN dishes ON menu_lists.id = dishes.menu_list_id INNER JOIN orders_dishes ON dishes.id = orders_dishes.dish_id WHERE menu_lists.id=? LIMIT 1)NOTNULL) WHERE id=?",id,id);
-    }
 }

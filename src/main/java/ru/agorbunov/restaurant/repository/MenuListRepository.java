@@ -31,7 +31,4 @@ public interface MenuListRepository extends BaseRepository<MenuList>{
     /*get menuList from database by dish Id, belongs to this menu list*/
     MenuList getByDish(int dishId);
 
-    // TODO: 29.12.2017 remove
-    /*saves several values exact to database */
-    void saveValuesToDB(int id);
 }

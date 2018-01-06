@@ -3,6 +3,7 @@ package ru.agorbunov.restaurant.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.agorbunov.restaurant.DishTestData;
+import ru.agorbunov.restaurant.MenuListTestData;
 import ru.agorbunov.restaurant.RestaurantTestData;
 import ru.agorbunov.restaurant.UserTestData;
 import ru.agorbunov.restaurant.matcher.ModelMatcher;
@@ -29,7 +30,7 @@ public class OrderServiceImplTest extends AbstractServiceTest {
     public void save() throws Exception {
         int dishIds[] = {DISH_01_ID,DISH_02_ID};
         int dishQuantityValues[] = {1,1};
-        Order orderSaved = service.save(ORDER_CREATED1,USER_01_ID,RESTAURANT_01_ID, dishIds,dishQuantityValues);
+        Order orderSaved = service.save(ORDER_CREATED1,USER_01_ID,RESTAURANT_01_ID, MenuListTestData.MENU_LIST_01_ID,dishIds,dishQuantityValues);
         int orderSavedId = orderSaved.getId();
         orderSaved = service.getWithDishes(orderSavedId,USER_01_ID,RESTAURANT_01_ID);
         MATCHER.assertCollectionEquals(Arrays.asList(ORDER_08,ORDER_07, ORDER_CREATED1,ORDER_01,ORDER_05,ORDER_03,ORDER_06,ORDER_04,ORDER_02),service.getAll());
@@ -43,7 +44,7 @@ public class OrderServiceImplTest extends AbstractServiceTest {
     public void updateWithoutDishes() throws Exception {
         Order order = service.get(ORDER_05_ID, UserTestData.USER_05_ID, RestaurantTestData.RESTAURANT_03_ID);
         order.setDateTime( LocalDateTime.of(2017,3,16,19,56));
-        service.save(order, UserTestData.USER_05_ID, RestaurantTestData.RESTAURANT_03_ID);
+        service.save(order, UserTestData.USER_05_ID, RestaurantTestData.RESTAURANT_03_ID, MenuListTestData.MENU_LIST_03_ID);
         MATCHER.assertEquals(order,service.get(ORDER_05_ID, UserTestData.USER_05_ID, RestaurantTestData.RESTAURANT_03_ID));
         DishTestData.MATCHER.assertCollectionEquals(Arrays.asList(DishTestData.DISH_11, DishTestData.DISH_10),
                 service.getWithDishes(ORDER_05_ID, UserTestData.USER_05_ID, RestaurantTestData.RESTAURANT_03_ID).getDishes().keySet());
@@ -55,7 +56,7 @@ public class OrderServiceImplTest extends AbstractServiceTest {
         thrown.expectMessage("order must not be null");
         int dishIds[] = {DISH_01_ID,DISH_02_ID};
         int dishQuantityValues[] = {1,1};
-        service.save(null,USER_01_ID,RESTAURANT_01_ID, dishIds,dishQuantityValues);
+        service.save(null,USER_01_ID,RESTAURANT_01_ID, MenuListTestData.MENU_LIST_01_ID, dishIds,dishQuantityValues);
     }
 
     @Test
@@ -94,7 +95,7 @@ public class OrderServiceImplTest extends AbstractServiceTest {
         order.setDateTime( LocalDateTime.of(2017,2,16,17,46));
         int dishIds[] = {DISH_01_ID,DISH_02_ID,DISH_03_ID,DISH_04_ID};
         int dishQuantityValues[] = {1,2,3,4};
-        service.save(order,USER_01_ID,RESTAURANT_01_ID,dishIds,dishQuantityValues);
+        service.save(order,USER_01_ID,RESTAURANT_01_ID, MenuListTestData.MENU_LIST_01_ID, dishIds,dishQuantityValues);
         Order orderSaved = service.getWithDishes(ORDER_01_ID,USER_01_ID,RESTAURANT_01_ID);
         MATCHER.assertEquals(order, orderSaved);
         ModelMatcher<Dish> DishMatcher = new ModelMatcher<>();
@@ -112,7 +113,7 @@ public class OrderServiceImplTest extends AbstractServiceTest {
         thrown.expect(NotFoundException.class);
         thrown.expectMessage(String.format("Not found entity with id=%d", ORDER_01_ID));
         Order order = service.get(ORDER_01_ID,USER_01_ID,RESTAURANT_01_ID);
-        service.save(order,USER_01_ID,RESTAURANT_02_ID);
+        service.save(order,USER_01_ID,RESTAURANT_02_ID, MenuListTestData.MENU_LIST_02_ID);
     }
 
     @Test
@@ -121,7 +122,7 @@ public class OrderServiceImplTest extends AbstractServiceTest {
         thrown.expectMessage("order must not be null");
         int dishIds[] = {DISH_01_ID,DISH_02_ID};
         int dishQuantityValues[] = {1,1};
-        service.save(null,USER_01_ID,RESTAURANT_01_ID, dishIds,dishQuantityValues);
+        service.save(null,USER_01_ID,RESTAURANT_01_ID, MenuListTestData.MENU_LIST_01_ID,dishIds,dishQuantityValues);
     }
 
     @Test
@@ -193,13 +194,13 @@ public class OrderServiceImplTest extends AbstractServiceTest {
     public void refuseUpdates() throws Exception{
         thrown.expect(RefuseToUpdateException.class);
         thrown.expectMessage(String.format("order %s has made after 11:00, it is too late, vote can't be changed", ORDER_CREATED2));
-        service.save(ORDER_CREATED2,USER_01_ID,RESTAURANT_01_ID);
+        service.save(ORDER_CREATED2,USER_01_ID,RESTAURANT_01_ID, MenuListTestData.MENU_LIST_01_ID);
     }
 
     @Test
     public void acceptUpdates() throws Exception{
         MATCHER.assertCollectionEquals(Collections.singletonList(ORDER_06),service.getByUserAndDate(USER_06_ID, DATE_2017_01_15));
-        service.save(ORDER_CREATED3,USER_06_ID,RESTAURANT_04_ID);
+        service.save(ORDER_CREATED3,USER_06_ID,RESTAURANT_04_ID, MenuListTestData.MENU_LIST_04_ID);
         MATCHER.assertCollectionEquals(Collections.singletonList(ORDER_CREATED3),service.getByUserAndDate(USER_06_ID, DATE_2017_01_15));
     }
 

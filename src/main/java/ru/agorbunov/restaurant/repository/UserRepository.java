@@ -20,7 +20,4 @@ public interface UserRepository extends BaseRepository<User> {
     *orders were made by the user*/
     User getWithOrders(int id);
 
-    // TODO: 29.12.2017 remove
-    /*saves several values exact to database */
-    void saveValuesToDB(int id);
 }

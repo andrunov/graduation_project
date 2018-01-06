@@ -16,9 +16,7 @@ CREATE TABLE users
   name                VARCHAR NOT NULL,
   email               VARCHAR NOT NULL UNIQUE,
   password            VARCHAR NOT NULL,
-  enabled             BOOL DEFAULT TRUE ,
-  hasOrders           BOOL DEFAULT FALSE ,
-  totalOrdersAmount  DOUBLE PRECISION
+  enabled             BOOL DEFAULT TRUE
 );
 
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
@@ -35,19 +33,7 @@ CREATE TABLE restaurants
 (
   id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   name       VARCHAR NOT NULL,
-  address    VARCHAR NOT NULL,
-  hasOrders  BOOL DEFAULT FALSE
-);
-
-CREATE TABLE orders(
-  id              INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-  user_id         INTEGER NOT NULL ,
-  restaurant_id  INTEGER NOT NULL ,
-  date_time      TIMESTAMP NOT NULL,
-  status         VARCHAR,
-  total_price    DOUBLE PRECISION,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ,
-  FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
+  address    VARCHAR NOT NULL
 );
 
 CREATE TABLE menu_lists(
@@ -56,7 +42,18 @@ CREATE TABLE menu_lists(
   date_time      TIMESTAMP NOT NULL,
   restaurant_id INTEGER NOT NULL ,
   enabled    BOOL DEFAULT TRUE,
-  hasOrders  BOOL DEFAULT FALSE,
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
+);
+
+CREATE TABLE orders(
+  id              INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+  user_id         INTEGER NOT NULL ,
+  restaurant_id  INTEGER NOT NULL ,
+  menu_list_id   INTEGER NOT NULL ,
+  date_time      TIMESTAMP NOT NULL,
+  status         VARCHAR,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ,
+  FOREIGN KEY (menu_list_id) REFERENCES menu_lists(id) ON DELETE CASCADE,
   FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
 );
 
@@ -66,7 +63,6 @@ CREATE TABLE dishes
   description      VARCHAR NOT NULL,
   price             DOUBLE PRECISION,
   menu_list_id     INTEGER NOT NULL ,
-  hasOrders         BOOL DEFAULT FALSE,
   FOREIGN KEY (menu_list_id) REFERENCES menu_lists (id) ON DELETE CASCADE
 );
 

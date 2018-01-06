@@ -75,7 +75,7 @@ public class OrderByDishAjaxController {
         order.setDateTime(dateTime);
         order.setStatus(Status.valueOf(status));
         log.info("update " + order);
-        orderService.save(order,user.getId(),restaurant.getId());
+//        orderService.save(order,user.getId(),restaurant.getId());
     }
 
     /*delete order by Id, userId and restaurantId*/

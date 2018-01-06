@@ -77,20 +77,20 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
     *userId and restaurantId in parameters is Ids of user and restaurant to which the order is belong*/
     @Override
     @Transactional
-    public Order save(Order order, int userId, int restaurantId, int[] dishIds, int[] dishQuantityValues) {
+    public Order save(Order order, int userId, int restaurantId,int menuListId, int[] dishIds, int[] dishQuantityValues) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", order.getId())
                 .addValue("status", order.getStatus().toString())
                 .addValue("user_id", userId)
                 .addValue("restaurant_id", restaurantId)
-                .addValue("date_time", toDbDateTime(order.getDateTime()))
-                .addValue("total_price",order.getTotalPrice());
+                .addValue("menu_list_id", menuListId)
+                .addValue("date_time", toDbDateTime(order.getDateTime()));
         if (order.isNew()) {
             Number newKey = insertOrder.executeAndReturnKey(map);
             order.setId(newKey.intValue());
             insertDishes(order.getId(), dishIds, dishQuantityValues);
         } else {
-            if(namedParameterJdbcTemplate.update("UPDATE orders SET date_time=:date_time, status=:status, total_price=:total_price WHERE id=:id AND user_id=:user_id AND restaurant_id=:restaurant_id", map)==0){
+            if(namedParameterJdbcTemplate.update("UPDATE orders SET date_time=:date_time, status=:status WHERE id=:id AND user_id=:user_id AND restaurant_id=:restaurant_id", map)==0){
                 return null;
             }else {
                 deleteDishes(order.getId());
@@ -106,14 +106,14 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
     *if order is already exist and have collections of dishes they not erase in database*/
     @Override
     @Transactional
-    public Order save(Order order, int userId, int restaurantId) {
+    public Order save(Order order, int userId, int restaurantId,int menuListId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", order.getId())
                 .addValue("status", order.getStatus().toString())
                 .addValue("user_id", userId)
                 .addValue("restaurant_id", restaurantId)
-                .addValue("date_time", toDbDateTime(order.getDateTime()))
-                .addValue("total_price",order.getTotalPrice());
+                .addValue("menu_list_id", menuListId)
+                .addValue("date_time", toDbDateTime(order.getDateTime()));
 
         if (order.isNew()) {
             Number newKey = insertOrder.executeAndReturnKey(map);

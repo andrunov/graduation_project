@@ -14,12 +14,12 @@ public interface OrderService extends BaseService<Order> {
     *,int[] dishIds - Ids of dishes, int[] dishQuantityValues - dishes quantities,
     * each dishId from first arr matches its quantity from second arr, arrays must have equal size
     *userId and restaurantId in parameters is Ids of user and restaurant to which the order is belong*/
-    Order save(Order order, int userId, int restaurantId, int[] dishIds, int[] dishQuantityValues);
+    Order save(Order order, int userId, int restaurantId, int menuListId,int[] dishIds, int[] dishQuantityValues);
 
     /*save order if it is new entity and update if it is exist,
     * userId and restaurantId in parameters is Ids of user and restaurant to which the order is belong,
     * if order is already exist and have collections of dishes they remain and not touch*/
-    Order save(Order order, int userId, int restaurantId);
+    Order save(Order order, int userId, int restaurantId, int menuListId);
 
     /*get order by Id, userId and restaurantId in parameters is Ids of
     *user and restaurant to which the order is belong*/

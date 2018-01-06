@@ -23,7 +23,10 @@ public class MenuListTestData {
 
     public static final MenuList MENU_LIST_CREATED = new MenuList(RESTAURANT_01,"Завтрак" , LocalDateTime.of(2017,1,15,15,0));
 
-    public static final int MENU_LIST_01_ID = 100016;
+    public static final int MENU_LIST_01_ID = 100010;
+    public static final int MENU_LIST_02_ID = 100011;
+    public static final int MENU_LIST_03_ID = 100012;
+    public static final int MENU_LIST_04_ID = 100013;
     public static final int RESTAURANT_01_ID = 100006;
     public static final int RESTAURANT_02_ID = 100007;
 

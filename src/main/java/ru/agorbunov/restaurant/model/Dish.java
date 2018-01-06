@@ -21,9 +21,6 @@ public class Dish extends BaseEntity {
     /*menuList to which this dish is belonging*/
     private MenuList menuList;
 
-    /*marks that this dish has orders*/
-    private boolean hasOrders;
-
     /*list of OrdersDishes elements that represents
      *many-to-many relationship between Orders and Dishes
      * with one additional field - quantity of Dish in order*/
@@ -59,14 +56,6 @@ public class Dish extends BaseEntity {
 
     public void setMenuList(MenuList menuList) {
         this.menuList = menuList;
-    }
-
-    public boolean isHasOrders() {
-        return hasOrders;
-    }
-
-    public void setHasOrders(boolean hasOrders) {
-        this.hasOrders = hasOrders;
     }
 
     /*getter and setter of List<OrdersDishes> orders returns and accepts

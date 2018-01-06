@@ -166,13 +166,4 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         return setRoles(DataAccessUtils.singleResult(users));
     }
 
-    // TODO: 29.12.2017 remove
-    /*get total amount of user's orders from database
-    * and save it to database to users's field "totalOrdersAmount",
-    * save hasOrders to database depending of existence orders of this user */
-    @Transactional
-    @Override
-    public void saveValuesToDB(int id) {
-        jdbcTemplate.update("UPDATE USERS SET hasOrders=((SELECT (id) FROM orders  WHERE user_id=? LIMIT 1)NOTNULL),totalOrdersAmount=coalesce((SELECT SUM(TOTAL_PRICE) FROM orders  WHERE user_id=?),0) WHERE id=?",id,id,id);
-    }
 }

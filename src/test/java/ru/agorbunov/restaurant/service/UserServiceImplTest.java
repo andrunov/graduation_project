@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.agorbunov.restaurant.DishTestData;
-import ru.agorbunov.restaurant.OrderTestData;
 import ru.agorbunov.restaurant.matcher.ModelMatcher;
 import ru.agorbunov.restaurant.model.Order;
 import ru.agorbunov.restaurant.model.User;
@@ -114,11 +112,5 @@ public class UserServiceImplTest extends AbstractServiceTest {
         OrderMatcher.assertCollectionEquals(USER_02.getOrders(),user.getOrders());
     }
 
-    @Test
-    public void accountAndSaveTotalOrdersAmount() throws Exception{
-        orderService.save(OrderTestData.ORDER_CREATED1,USER_01_ID,OrderTestData.RESTAURANT_01_ID,new int[] {DishTestData.DISH_01_ID, DishTestData.DISH_02_ID},new int[] {1,2});
-        User user = service.get(USER_01_ID);
-        Assert.assertEquals(18.42, user.getTotalOrdersAmount(),0.001);
-    }
 
 }

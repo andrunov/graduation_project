@@ -26,18 +26,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private MenuListRepository menuListRepository;
-
-    @Autowired
-    private DishRepository dishRepository;
-
     /*save order if it is new entity and update if it is exist,
     *,int[] dishIds - Ids of dishes, int[] dishQuantityValues - dishes quantities,
     * each dishId from first arr matches its quantity from second arr, arrays must have equal size
@@ -46,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
     * and check that order was found (order belongs to these user and restaurant
     * update totalOrdersAmount in corresponding user-entity in success case*/
     @Override
-    public Order save(Order order, int userId, int restaurantId, int[] dishIds, int[] dishQuantityValues) {
+    public Order save(Order order, int userId, int restaurantId, int menuListId, int[] dishIds, int[] dishQuantityValues) {
         Assert.notNull(order,"order must not be null");
         checkAcceptableUpdate(order);
         checkArrCompatibility(dishIds,dishQuantityValues);
@@ -54,16 +42,7 @@ public class OrderServiceImpl implements OrderService {
         ValidationUtil.checkEmptyArray(dishIds);
         ValidationUtil.checkEmptyArray(dishQuantityValues);
         checkPreviousOrders(userId, order);
-        int[] oldDishIds = new int[0];
-        if (!order.isNew()){
-            oldDishIds = getDishIds(orderRepository.getWithDishes(order.getId(),userId,restaurantId).getDishes().keySet());
-        }
-        Order result = checkNotFoundWithId(orderRepository.save(order,userId,restaurantId,dishIds,dishQuantityValues),order.getId());
-        userRepository.saveValuesToDB(userId);
-        restaurantRepository.saveValuesToDB(restaurantId);
-        dishRepository.saveValuesToDB(getResultArr(oldDishIds,dishIds));
-        menuListRepository.saveValuesToDB(menuListRepository.getByDish(dishIds[0]).getId());
-        return result;
+        return checkNotFoundWithId(orderRepository.save(order,userId,restaurantId,menuListId,dishIds,dishQuantityValues),order.getId());
     }
 
     /*save order if it is new entity and update if it is exist,
@@ -71,11 +50,11 @@ public class OrderServiceImpl implements OrderService {
     * if order is already exist and have collections of dishes they remain and not touch
     * check that order not null and check that order was found (order belongs to these user and restaurant*/
     @Override
-    public Order save(Order order, int userId, int restaurantId) {
+    public Order save(Order order, int userId, int restaurantId, int menuListId) {
         Assert.notNull(order,"order must not be null");
         ValidationUtil.checkEmpty(order.getDateTime(),"dateTime");
         checkPreviousOrders(userId, order);
-        return checkNotFoundWithId(orderRepository.save(order,userId,restaurantId),order.getId());
+        return checkNotFoundWithId(orderRepository.save(order,userId,restaurantId,menuListId),order.getId());
     }
 
     /*delete order by Id, check that order was found */
@@ -170,40 +149,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = getWithDishes(id,userId,restaurantId);
         checkAcceptableUpdate(order);
         delete(id);
-        userRepository.saveValuesToDB(userId);
-        restaurantRepository.saveValuesToDB(restaurantId);
-        int[] dishIds = getDishIds(order.getDishes().keySet());
-        dishRepository.saveValuesToDB(dishIds);
-        menuListRepository.saveValuesToDB(menuListRepository.getByDish(dishIds[0]).getId());
-    }
-
-    /*transform Set<Dish> to int[] of dishes ids*/
-    private int[] getDishIds(Set<Dish> dishes){
-        int[] result = new int[dishes.size()];
-        int counter = 0;
-        for (Dish dish : dishes){
-            result[counter++] = dish.getId();
-        }
-        return result;
-    }
-
-    /*get result int[] containing all elements of two arrays int[] sending in parameters*/
-    private int[] getResultArr(int[] oldDishesIds, int[] newDishesIds){
-        List<Integer> list = new ArrayList<>();
-        for (Integer dishId : oldDishesIds){
-            list.add(dishId);
-        }
-
-        for (Integer dishId : newDishesIds){
-            if (!list.contains(dishId)){
-                list.add(dishId);
-            }
-        }
-        int[] result = new int[list.size()];
-        for (int index = 0; index < list.size(); index++){
-            result[index] = list.get(index);
-        }
-        return result;
     }
 
     /*If user votes again the same day:

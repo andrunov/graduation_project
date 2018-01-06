@@ -19,6 +19,9 @@ public class Order extends BaseEntity {
     /*restaurant in which Order was made*/
     private Restaurant restaurant;
 
+    /*menuList by which order was made*/
+    private MenuList menuList;
+
     /*list of OrdersDishes elements that represents
      *many-to-many relationship between Orders and Dishes
      * with one additional field - quantity of Dish in order*/
@@ -30,22 +33,21 @@ public class Order extends BaseEntity {
     /*Status of order*/
     private Status status;
 
-    /*Total price of order*/
-    private double totalPrice;
-
     public Order() {
     }
 
-    public Order(User user, Restaurant restaurant, LocalDateTime dateTime) {
+    public Order(User user, MenuList menuList, LocalDateTime dateTime) {
         this.user = user;
-        this.restaurant = restaurant;
+        this.restaurant = menuList.getRestaurant();
+        this.menuList = menuList;
         this.dateTime = dateTime;
         this.status = Status.ACCEPTED;
     }
 
-    public Order(User user, Restaurant restaurant, List<OrdersDishes> dishes, LocalDateTime dateTime, Status status) {
+    public Order(User user, MenuList menuList,List<OrdersDishes> dishes, LocalDateTime dateTime, Status status) {
         this.user = user;
-        this.restaurant = restaurant;
+        this.restaurant = menuList.getRestaurant();
+        this.menuList = menuList;
         this.dishes = dishes;
         this.dateTime = dateTime;
         this.status = status;
@@ -111,12 +113,12 @@ public class Order extends BaseEntity {
         this.status = status;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public MenuList getMenuList() {
+        return menuList;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setMenuList(MenuList menuList) {
+        this.menuList = menuList;
     }
 
     @Override

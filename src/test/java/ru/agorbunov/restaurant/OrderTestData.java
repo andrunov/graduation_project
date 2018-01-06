@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import static ru.agorbunov.restaurant.DishTestData.*;
-import static ru.agorbunov.restaurant.RestaurantTestData.*;
+import static ru.agorbunov.restaurant.MenuListTestData.*;
 import static ru.agorbunov.restaurant.UserTestData.*;
 
 /**
@@ -21,24 +21,22 @@ public class OrderTestData {
 
     public static final ModelMatcher<Order> MATCHER = new ModelMatcher<>();
 
-    public static final Order ORDER_01 = new Order(USER_01,RESTAURANT_01, LocalDateTime.of(2017,1,15,15,47));
-    public static final Order ORDER_02 = new Order(USER_02,RESTAURANT_01, LocalDateTime.of(2017,1,14,18,49));
-    public static final Order ORDER_03 = new Order(USER_03,RESTAURANT_02, LocalDateTime.of(2017,1,15,12,7));
-    public static final Order ORDER_04 = new Order(USER_04,RESTAURANT_02, LocalDateTime.of(2017,1,15,2,9));
-    public static final Order ORDER_05 = new Order(USER_05,RESTAURANT_03, LocalDateTime.of(2017,1,15,14,17));
-    public static final Order ORDER_06 = new Order(USER_06,RESTAURANT_04, LocalDateTime.of(2017,1,15,9,29));
-    public static final Order ORDER_07 = new Order(USER_06,RESTAURANT_04, LocalDateTime.of(2017,2,15,16,32));
-    public static final Order ORDER_08 = new Order(USER_06,RESTAURANT_04, LocalDateTime.of(2017,2,15,18,28));
+    public static final Order ORDER_01 = new Order(USER_01, MENU_LIST_01, LocalDateTime.of(2017,1,15,15,47));
+    public static final Order ORDER_02 = new Order(USER_02, MENU_LIST_01, LocalDateTime.of(2017,1,14,18,49));
+    public static final Order ORDER_03 = new Order(USER_03, MENU_LIST_02, LocalDateTime.of(2017,1,15,12,7));
+    public static final Order ORDER_04 = new Order(USER_04, MENU_LIST_02, LocalDateTime.of(2017,1,15,2,9));
+    public static final Order ORDER_05 = new Order(USER_05, MENU_LIST_03, LocalDateTime.of(2017,1,15,14,17));
+    public static final Order ORDER_06 = new Order(USER_06, MENU_LIST_04, LocalDateTime.of(2017,1,15,9,29));
+    public static final Order ORDER_07 = new Order(USER_06, MENU_LIST_04, LocalDateTime.of(2017,2,15,16,32));
+    public static final Order ORDER_08 = new Order(USER_06, MENU_LIST_04, LocalDateTime.of(2017,2,15,18,28));
 
-    public static final Order ORDER_CREATED1 = new Order(USER_01,RESTAURANT_01, LocalDateTime.of(2017,1,16,9,30));
-    public static final Order ORDER_CREATED2 = new Order(USER_01,RESTAURANT_01, LocalDateTime.of(2017,1,15,15,48));
-    public static final Order ORDER_CREATED3 = new Order(USER_06,RESTAURANT_04, LocalDateTime.of(2017,1,15,10,59));
+    public static final Order ORDER_CREATED1 = new Order(USER_01, MENU_LIST_01, LocalDateTime.of(2017,1,16,9,30));
+    public static final Order ORDER_CREATED2 = new Order(USER_01, MENU_LIST_01, LocalDateTime.of(2017,1,15,15,48));
+    public static final Order ORDER_CREATED3 = new Order(USER_06, MENU_LIST_04, LocalDateTime.of(2017,1,15,10,59));
 
-    public static final int ORDER_01_ID = 100010;
-    public static final int ORDER_05_ID = 100014;
-    public static final int ORDER_06_ID = 100015;
-    public static final int ORDER_07_ID = 100040;
-    public static final int ORDER_08_ID = 100041;
+    public static final int ORDER_01_ID = 100014;
+    public static final int ORDER_05_ID = 100018;
+    public static final int ORDER_06_ID = 100019;
     public static final int USER_01_ID = 100000;
     public static final int USER_06_ID = 100005;
     public static final int RESTAURANT_01_ID = 100006;
@@ -117,12 +115,9 @@ public class OrderTestData {
         dishes09.put(DISH_01,1);
         dishes09.put(DISH_02,1);
         ORDER_CREATED1.setDishes(dishes09);
-        ORDER_CREATED1.setTotalPrice(4.7);
 
         ORDER_CREATED2.setDishes(dishes09);
-        ORDER_CREATED2.setTotalPrice(4.7);
 
         ORDER_CREATED3.setDishes(dishes09);
-        ORDER_CREATED3.setTotalPrice(4.7);
     }
 }

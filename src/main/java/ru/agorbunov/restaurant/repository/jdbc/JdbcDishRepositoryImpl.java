@@ -2,7 +2,6 @@ package ru.agorbunov.restaurant.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,9 +17,10 @@ import ru.agorbunov.restaurant.util.ComparatorUtil;
 import ru.agorbunov.restaurant.util.DateTimeUtil;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Dish-entities repository by Java DataBase Connectivity
@@ -160,23 +160,4 @@ public class JdbcDishRepositoryImpl<T> implements DishRepository {
         return d;
     }
 
-    // TODO: 29.12.2017 remove
-    /*save hasOrders to database depending of existence orders of this dishes*/
-    @Override
-    @Transactional
-    public void saveValuesToDB(int[] dishIds) {
-        jdbcTemplate.batchUpdate("UPDATE DISHES SET hasOrders=((SELECT order_id FROM orders_dishes WHERE dish_id=? LIMIT 1)NOTNULL) WHERE id=?",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setInt(1, dishIds[i]);
-                        ps.setInt(2, dishIds[i]);
-                    }
-
-                    @Override
-                    public int getBatchSize() {
-                        return dishIds.length;
-                    }
-                });
-    }
 }

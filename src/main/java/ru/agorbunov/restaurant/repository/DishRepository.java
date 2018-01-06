@@ -29,7 +29,4 @@ public interface DishRepository extends BaseRepository<Dish> {
     /*delete references to dishes from order in database, dish Id and order Id pass in parameters */
     boolean deleteFromOrder(int id,int orderId);
 
-    // TODO: 29.12.2017 remove
-    /*saves several values exact to database */
-    void saveValuesToDB(int[] dishIds);
 }
