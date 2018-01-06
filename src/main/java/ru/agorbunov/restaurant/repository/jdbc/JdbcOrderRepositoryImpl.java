@@ -53,7 +53,7 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
                 .usingGeneratedKeyColumns("id");
     }
 
-    /*Customise repository for HSQLDB*/
+    /*Customise repository for Postgres*/
 //    @Repository
 //    public static class Java8JdbcOrderRepositoryImpl extends JdbcOrderRepositoryImpl<LocalDateTime> {
 //        @Override
@@ -62,7 +62,7 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
 //        }
 //    }
 
-    /*Customise repository for Postgres*/
+    /*Customise repository for HSQLDB*/
     @Repository
     public static class TimestampJdbcOrderRepositoryImpl extends JdbcOrderRepositoryImpl<Timestamp> {
         @Override
