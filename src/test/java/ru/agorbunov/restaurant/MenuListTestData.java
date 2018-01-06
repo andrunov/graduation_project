@@ -2,11 +2,14 @@ package ru.agorbunov.restaurant;
 
 import ru.agorbunov.restaurant.matcher.ModelMatcher;
 import ru.agorbunov.restaurant.model.MenuList;
+import ru.agorbunov.restaurant.model.Restaurant;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static ru.agorbunov.restaurant.DishTestData.*;
+import static ru.agorbunov.restaurant.OrderTestData.*;
 import static ru.agorbunov.restaurant.RestaurantTestData.*;
 
 /**
@@ -30,12 +33,25 @@ public class MenuListTestData {
     public static final int RESTAURANT_01_ID = 100006;
     public static final int RESTAURANT_02_ID = 100007;
 
+    // link to RESTAURANT_02 with initialized List<MenuLis> menuLists
+    public static final Restaurant RESTAURANT_02_WITH_DISHES = RESTAURANT_02;
+
     static {
-        MENU_LIST_01.setDishList(Arrays.asList(DISH_01, DISH_02, DISH_03, DISH_04, DISH_05));
-        MENU_LIST_02.setDishList(Arrays.asList(DISH_06, DISH_07, DISH_08, DISH_09));
-        MENU_LIST_03.setDishList(Arrays.asList(DISH_10, DISH_11, DISH_12, DISH_13, DISH_14));
-        MENU_LIST_04.setDishList(Arrays.asList(DISH_15, DISH_16, DISH_17, DISH_18, DISH_19,DISH_20));
-        MENU_LIST_CREATED.setDishList(Arrays.asList(DISH_01, DISH_02));
+       RESTAURANT_01.setMenuLists(Collections.singletonList(MENU_LIST_01));
+       RESTAURANT_01.setOrders(Arrays.asList(ORDER_01,ORDER_02));
+       RESTAURANT_02.setMenuLists(Collections.singletonList(MENU_LIST_02));
+       RESTAURANT_02.setOrders(Arrays.asList(ORDER_03,ORDER_04));
+       RESTAURANT_03.setMenuLists(Collections.singletonList(MENU_LIST_03));
+       RESTAURANT_03.setOrders(Collections.singletonList(ORDER_05));
+       RESTAURANT_04.setMenuLists(Collections.singletonList(MENU_LIST_04));
+       RESTAURANT_04.setOrders(Collections.singletonList(ORDER_06));
+       RESTAURANT_CREATED.setMenuLists(Collections.singletonList(MENU_LIST_01));
+       RESTAURANT_CREATED.setOrders(Collections.singletonList(ORDER_01));
+       MENU_LIST_01.setDishList(Arrays.asList(DISH_01, DISH_02, DISH_03, DISH_04, DISH_05));
+       MENU_LIST_02.setDishList(Arrays.asList(DISH_06, DISH_07, DISH_08, DISH_09));
+       MENU_LIST_03.setDishList(Arrays.asList(DISH_10, DISH_11, DISH_12, DISH_13, DISH_14));
+       MENU_LIST_04.setDishList(Arrays.asList(DISH_15, DISH_16, DISH_17, DISH_18, DISH_19,DISH_20));
+       MENU_LIST_CREATED.setDishList(Arrays.asList(DISH_01, DISH_02));
     }
 
 }

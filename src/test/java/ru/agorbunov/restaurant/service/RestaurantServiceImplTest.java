@@ -3,6 +3,7 @@ package ru.agorbunov.restaurant.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.agorbunov.restaurant.MenuListTestData;
 import ru.agorbunov.restaurant.matcher.ModelMatcher;
 import ru.agorbunov.restaurant.model.MenuList;
 import ru.agorbunov.restaurant.model.Order;
@@ -91,9 +92,9 @@ public class RestaurantServiceImplTest extends AbstractServiceTest{
         ModelMatcher<Order> OrderMatcher = new ModelMatcher<>();
         ModelMatcher<MenuList> MenuListsMatcher = new ModelMatcher<>();
         Restaurant restaurant = service.getWithMenuLists(RESTAURANT_02_ID);
-        MATCHER.assertEquals(RESTAURANT_02,restaurant);
-        MenuListsMatcher.assertCollectionEquals(RESTAURANT_02.getMenuLists(),restaurant.getMenuLists());
-        OrderMatcher.assertCollectionEquals(RESTAURANT_02.getOrders(),restaurant.getOrders());
+        MATCHER.assertEquals(MenuListTestData.RESTAURANT_02_WITH_DISHES,restaurant);
+        MenuListsMatcher.assertCollectionEquals(MenuListTestData.RESTAURANT_02_WITH_DISHES.getMenuLists(),restaurant.getMenuLists());
+        OrderMatcher.assertCollectionEquals(MenuListTestData.RESTAURANT_02_WITH_DISHES.getOrders(),restaurant.getOrders());
     }
 
 }
