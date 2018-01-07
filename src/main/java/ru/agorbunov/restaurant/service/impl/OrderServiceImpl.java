@@ -176,7 +176,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /*If user votes again the same day:
-                - If it is before 11:00 we asume that he changed his mind.
+                - If it is before 11:00 we assume that he changed his mind.
                 - If it is after 11:00 then it is too late, vote can't be changed*/
     private void checkPreviousOrders(int userId, Order order) {
         LocalDateTime localDateTime = order.getDateTime();
