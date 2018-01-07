@@ -153,17 +153,17 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
                 });
     }
 
-    /*get order from database by Id, userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong*/
+    /*get order from database by Id, userId and restaurantId in parameters
+   * of user and restaurant to which the order is belong*/
     @Override
     public Order get(int id, int userId, int restaurantId) {
         List<Order> orders = jdbcTemplate.query("SELECT * FROM orders WHERE id=? AND user_id=? AND restaurant_id=?", ROW_MAPPER, id,userId,restaurantId);
         return DataAccessUtils.singleResult(orders);
     }
 
-    /*get order from database by Id with collections of dishes which the order is have ,
-    *userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong*/
+    /*get order from database by Id, userId and restaurantId in parameters
+    * of user and restaurant to which the order is belong
+    * with  List<Dish> dishes belongs to order */
     @Override
     public Order getWithDishes(int id, int userId, int restaurantId) {
         List<Order> orders = jdbcTemplate.query("SELECT * FROM orders WHERE id=? AND user_id=? AND restaurant_id=?", ROW_MAPPER, id,userId,restaurantId);
@@ -286,6 +286,46 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
     @Override
     public List<Order> getByMenuList(int menuListId) {
         List<Order> result = jdbcTemplate.query("SELECT * FROM orders WHERE menu_list_id=? ORDER BY date_time DESC ", ROW_MAPPER,menuListId);
+        for (Order order : result) {
+            setUser(order);
+            setRestaurant(order);
+        }
+        return result;
+    }
+
+    /*get all orders from database that belongs to menuList with Id pass as parameter *
+    * and with status pass as 2nd parameter */
+    @Override
+    public List<Order> getByMenuListAndStatus(int menuListId, String status) {
+        List<Order> result = jdbcTemplate.query("SELECT * FROM orders WHERE menu_list_id=? AND status=? ORDER BY date_time DESC ", ROW_MAPPER,menuListId, status);
+        for (Order order : result) {
+            setUser(order);
+            setRestaurant(order);
+        }
+        return result;
+    }
+
+    /*get all orders from database that belongs to menuList with Id pass as parameter *
+    * and which made on Date  pass as 2nd parameter  */
+    @Override
+    public List<Order> getByMenuListAndDate(int menuListId, LocalDateTime localDateTime) {
+        LocalDateTime beginDate = localDateTime.toLocalDate().atStartOfDay();
+        LocalDateTime endDate = beginDate.plusHours(23).plusMinutes(59).minusSeconds(59).plusNanos(999999999);
+        List<Order> result = jdbcTemplate.query("SELECT * FROM orders WHERE menu_list_id=? AND date_time>=? AND date_time<=? ORDER BY date_time DESC ", ROW_MAPPER,menuListId, toDbDateTime(beginDate),toDbDateTime(endDate));
+        for (Order order : result) {
+            setUser(order);
+            setRestaurant(order);
+        }
+        return result;
+    }
+
+    /*get all orders from database that belongs to menuList with Id pass as parameter *
+     * and with status pass as 2nd parameter and which made on Date  pass as 3rd parameter */
+    @Override
+    public List<Order> getByMenuListAndStatusAndDate(int menuListId, String status, LocalDateTime localDateTime) {
+        LocalDateTime beginDate = localDateTime.toLocalDate().atStartOfDay();
+        LocalDateTime endDate = beginDate.plusHours(23).plusMinutes(59).minusSeconds(59).plusNanos(999999999);
+        List<Order> result = jdbcTemplate.query("SELECT * FROM orders WHERE menu_list_id=? AND status=? AND date_time>=? AND date_time<=? ORDER BY date_time DESC ", ROW_MAPPER,menuListId, status, toDbDateTime(beginDate),toDbDateTime(endDate));
         for (Order order : result) {
             setUser(order);
             setRestaurant(order);

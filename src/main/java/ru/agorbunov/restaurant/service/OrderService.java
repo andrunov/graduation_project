@@ -21,13 +21,13 @@ public interface OrderService extends BaseService<Order> {
     * if order is already exist and have collections of dishes they remain and not touch*/
     Order save(Order order, int userId, int restaurantId, int menuListId);
 
-    /*get order by Id, userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong*/
+    /*get order by Id, userId and restaurantId in parameters
+    * of user and restaurant to which the order is belong*/
     Order get(int id, int userId, int restaurantId);
 
-    /*get order by Id with collections of dishes which the order is have ,
-    *userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong*/
+    /*get order by Id, userId and restaurantId in parameters
+    * of user and restaurant to which the order is belong
+    * with List<Dish> dishes belongs to order */
     Order getWithDishes(int id, int userId, int restaurantId);
 
     /*get all orders that belongs to user with Id pass as parameter */
@@ -66,5 +66,17 @@ public interface OrderService extends BaseService<Order> {
 
     /*get all orders that belongs to menuList with Id pass as parameter */
     List<Order> getByMenuList(int menuListId);
+
+    /*get all orders that belongs to menuList with Id pass as parameter *
+   * and with status pass as 2nd parameter */
+    List<Order> getByMenuListAndStatus(int menuListId, String status);
+
+    /*get all orders that belongs to menuList with Id pass as parameter *
+     * and which made on Date  pass as 2nd parameter  */
+    List<Order> getByMenuListAndDate(int menuListId, LocalDateTime localDateTime);
+
+    /*get all orders that belongs to menuList with Id pass as parameter *
+    * and with status pass as 2nd parameter and which made on Date  pass as 3rd parameter */
+    List<Order> getByMenuListAndStatusAndDate(int menuListId, String status, LocalDateTime localDateTime);
 
 }

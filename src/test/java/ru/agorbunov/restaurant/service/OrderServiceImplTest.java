@@ -207,7 +207,21 @@ public class OrderServiceImplTest extends AbstractServiceTest {
     @Test
     public void getByMenuList() throws Exception{
         MATCHER.assertCollectionEquals(Arrays.asList(ORDER_08,ORDER_07,ORDER_06),service.getByMenuList(MenuListTestData.MENU_LIST_04_ID));
+    }
 
+    @Test
+    public void getByMenuListAndStatus() throws Exception{
+        MATCHER.assertCollectionEquals(Collections.singletonList(ORDER_08),service.getByMenuListAndStatus(MenuListTestData.MENU_LIST_04_ID,"FINISHED"));
+    }
+
+    @Test
+    public void getByMenuListAndDate() throws Exception{
+        MATCHER.assertCollectionEquals(Collections.singletonList(ORDER_06),service.getByMenuListAndDate(MenuListTestData.MENU_LIST_04_ID,LocalDateTime.of(2017,1,15,0,0)));
+    }
+
+    @Test
+    public void getByMenuListAndStatusAndDate() throws Exception{
+        MATCHER.assertCollectionEquals(Collections.singletonList(ORDER_07),service.getByMenuListAndStatusAndDate(MenuListTestData.MENU_LIST_04_ID,"READY",LocalDateTime.of(2017,2,15,0,0)));
     }
 
 }

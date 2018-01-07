@@ -67,17 +67,17 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getAll();
     }
 
-    /*get order by Id, userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong,
+    /*get order by Id, userId and restaurantId in parameters
+    * of user and restaurant to which the order is belong,
     *check that order was found (order belongs to these user and restaurant*/
     @Override
     public Order get(int id, int userId, int restaurantId) {
         return checkNotFoundWithId(orderRepository.get(id,userId,restaurantId),id);
     }
 
-    /*get order by Id with collections of dishes which the order is have ,
-    *userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong,
+   /* get order by Id, userId and restaurantId in parameters
+    * of user and restaurant to which the order is belong
+    * with List<Dish> dishes belongs to order,
     *check that order was found (order belongs to these user and restaurant*/
     @Override
     public Order getWithDishes(int id, int userId, int restaurantId) {
@@ -154,9 +154,30 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getByMenuList(menuListId);
     }
 
+    /*get all orders that belongs to menuList with Id pass as parameter *
+    * and with status pass as 2nd parameter */
+    @Override
+    public List<Order> getByMenuListAndStatus(int menuListId, String status) {
+        return orderRepository.getByMenuListAndStatus(menuListId,status);
+    }
+
+    /*get all orders that belongs to menuList with Id pass as parameter *
+    * and which made on Date  pass as 2nd parameter  */
+    @Override
+    public List<Order> getByMenuListAndDate(int menuListId, LocalDateTime localDateTime) {
+        return orderRepository.getByMenuListAndDate(menuListId,localDateTime);
+    }
+
+    /*get all orders that belongs to menuList with Id pass as parameter *
+    * and with status pass as 2nd parameter and which made on Date  pass as 3rd parameter */
+    @Override
+    public List<Order> getByMenuListAndStatusAndDate(int menuListId, String status, LocalDateTime localDateTime) {
+        return orderRepository.getByMenuListAndStatusAndDate(menuListId,status,localDateTime);
+    }
+
     /*If user votes again the same day:
-            - If it is before 11:00 we asume that he changed his mind.
-            - If it is after 11:00 then it is too late, vote can't be changed*/
+                - If it is before 11:00 we asume that he changed his mind.
+                - If it is after 11:00 then it is too late, vote can't be changed*/
     private void checkPreviousOrders(int userId, Order order) {
         LocalDateTime localDateTime = order.getDateTime();
         List<Order> ordersForSameDay = orderRepository.getByUserAndDate(userId,localDateTime);

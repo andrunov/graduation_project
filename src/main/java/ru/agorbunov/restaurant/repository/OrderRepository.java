@@ -21,13 +21,13 @@ public interface OrderRepository extends BaseRepository<Order> {
     *if order is already exist and have collections of dishes they not erase in database*/
     Order save(Order order,  int userId, int restaurantId, int menuListId);
 
-    /*get order from database by Id, userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong*/
+    /*get order from database by Id, userId and restaurantId in parameters
+    * of user and restaurant to which the order is belong*/
     Order get(int id, int userId, int restaurantId);
 
-    /*get order from database by Id with collections of dishes which the order is have ,
-    *userId and restaurantId in parameters is Ids of
-    *user and restaurant to which the order is belong*/
+    /*get order from database by Id, userId and restaurantId in parameters
+    * of user and restaurant to which the order is belong
+    * with  List<Dish> dishes belongs to order */
     Order getWithDishes(int id, int userId, int restaurantId);
 
     /*get all orders from database that belongs to user with Id pass as parameter */
@@ -63,4 +63,15 @@ public interface OrderRepository extends BaseRepository<Order> {
     /*get all orders from database that belongs to menuList with Id pass as parameter */
     List<Order> getByMenuList(int menuListId);
 
+    /*get all orders from database that belongs to menuList with Id pass as parameter *
+     * and with status pass as 2nd parameter */
+    List<Order> getByMenuListAndStatus(int menuListId, String status);
+
+    /*get all orders from database that belongs to menuList with Id pass as parameter *
+     * and which made on Date  pass as 2nd parameter  */
+    List<Order> getByMenuListAndDate(int menuListId, LocalDateTime localDateTime);
+
+    /*get all orders from database that belongs to menuList with Id pass as parameter *
+    * and with status pass as 2nd parameter and which made on Date  pass as 3rd parameter */
+    List<Order> getByMenuListAndStatusAndDate(int menuListId, String status, LocalDateTime localDateTime);
 }
