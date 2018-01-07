@@ -137,7 +137,7 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
     * int[] dishIds - Ids of dishes, int[] dishQuantityValues - dishes quantities,
     * each dishId from first arr matches its quantity from second arr, arrays must have equal size*/
     private void insertDishes(int orderId, int[] dishIds, int[] dishQuantityValues) {
-        jdbcTemplate.batchUpdate("INSERT INTO orders_dishes (order_id, dish_id, dish_quantity) VALUES (?, ?, ?)",
+        jdbcTemplate.batchUpdate("INSERT INTO orders_dishes (order_id, dish_id,dish_quantity) VALUES (?, ?, ?)",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -275,6 +275,17 @@ public abstract class JdbcOrderRepositoryImpl<T> implements OrderRepository {
         LocalDateTime beginDate = localDateTime.toLocalDate().atStartOfDay();
         LocalDateTime endDate = beginDate.plusHours(23).plusMinutes(59).minusSeconds(59).plusNanos(999999999);
         List<Order> result = jdbcTemplate.query("SELECT o.* FROM orders AS o JOIN orders_dishes AS od ON o.id = od.order_id WHERE od.dish_id=? AND  status=? AND date_time>=? AND date_time<=? ORDER BY date_time DESC", ROW_MAPPER, dishId, status, toDbDateTime(beginDate),toDbDateTime(endDate));
+        for (Order order : result) {
+            setUser(order);
+            setRestaurant(order);
+        }
+        return result;
+    }
+
+    /*get all orders from database that belongs to menuList with Id pass as parameter */
+    @Override
+    public List<Order> getByMenuList(int menuListId) {
+        List<Order> result = jdbcTemplate.query("SELECT * FROM orders WHERE menu_list_id=? ORDER BY date_time DESC ", ROW_MAPPER,menuListId);
         for (Order order : result) {
             setUser(order);
             setRestaurant(order);

@@ -3,17 +3,14 @@ package ru.agorbunov.restaurant.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ru.agorbunov.restaurant.model.Dish;
 import ru.agorbunov.restaurant.model.Order;
-import ru.agorbunov.restaurant.repository.*;
+import ru.agorbunov.restaurant.repository.OrderRepository;
 import ru.agorbunov.restaurant.service.OrderService;
 import ru.agorbunov.restaurant.util.ValidationUtil;
 import ru.agorbunov.restaurant.util.exception.RefuseToUpdateException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static ru.agorbunov.restaurant.util.ValidationUtil.*;
 
@@ -151,9 +148,15 @@ public class OrderServiceImpl implements OrderService {
         delete(id);
     }
 
+    /*get all orders that belongs to menuList with Id pass as parameter */
+    @Override
+    public List<Order> getByMenuList(int menuListId) {
+        return orderRepository.getByMenuList(menuListId);
+    }
+
     /*If user votes again the same day:
-        - If it is before 11:00 we asume that he changed his mind.
-        - If it is after 11:00 then it is too late, vote can't be changed*/
+            - If it is before 11:00 we asume that he changed his mind.
+            - If it is after 11:00 then it is too late, vote can't be changed*/
     private void checkPreviousOrders(int userId, Order order) {
         LocalDateTime localDateTime = order.getDateTime();
         List<Order> ordersForSameDay = orderRepository.getByUserAndDate(userId,localDateTime);
